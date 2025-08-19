@@ -27,7 +27,7 @@ const Home: React.FC = () => {
       {/* ✅ 手機且已掃到圖後，就移除 ARView，避免白屏 */}
       {isPhone && found ? (
         <div className="model-viewer-wrapper">
-          <model-viewer src="/models/meals_mk.glb" ios-src="/models/car_model.usdz" alt="3D model" ar ar-modes="scene-viewer quick-look" camera-controls auto-rotate shadow-intensity="1" style={{ width: "100%", height: "100%" }}>
+          <model-viewer src="/models/meals_mk.glb" ios-src="/models/car_model.usdz" alt="3D model" ar ar-modes="scene-viewer quick-look webxr" camera-controls auto-rotate shadow-intensity="1" style={{ width: "100%", height: "100%" }}>
             <button slot="ar-button" className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition">
               🚀 啟動 AR 模式
             </button>
