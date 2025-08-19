@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ARAnchor, ARView } from "react-three-mind";
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,6 +16,7 @@ const ARModel = () => {
 
 const Home: React.FC = () => {
   const [found, setFound] = useState(false);
+  const mvRef = useRef<any>(null);
 
   const handleFound = () => {
     console.log("✅ 圖標掃到！");
@@ -27,8 +28,36 @@ const Home: React.FC = () => {
       {/* ✅ 手機且已掃到圖後，就移除 ARView，避免白屏 */}
       {isPhone && found ? (
         <div className="model-viewer-wrapper">
-          <model-viewer src="/models/meals_mk.glb" ios-src="/models/car_model.usdz" alt="3D model" ar ar-modes="scene-viewer quick-look webxr" camera-controls auto-rotate shadow-intensity="1" style={{ width: "100%", height: "100%" }}>
-            <button slot="ar-button" className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition">
+          <model-viewer ref={mvRef} src="/models/meals_mk.glb" ios-src="/models/car_model.usdz" ar ar-modes="scene-viewer webxr quick-look" camera-controls auto-rotate shadow-intensity="1" style={{ width: "100%", height: "100%" }}>
+            <button
+              slot="ar-button"
+              onClick={async (e) => {
+                e.stopPropagation();
+                const mv = mvRef.current;
+                if (!mv) return;
+
+                try {
+                  if (mv.canActivateAR) {
+                    await mv.activateAR(); // Android: Scene Viewer / WebXR；iOS: Quick Look
+                  } else {
+                    // === Fallbacks ===
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                    if (isIOS) {
+                      // 直接開 Quick Look 連結
+                      window.location.href = "/models/car_model.usdz";
+                    } else {
+                      // 直接開 Scene Viewer intent（保險做法，可留著）
+                      const glb = encodeURIComponent(new URL("/models/meals_mk.glb", window.location.href).toString());
+                      const fallback = encodeURIComponent(window.location.href);
+                      window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${glb}&mode=ar_preferred` + `#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;` + `S.browser_fallback_url=${fallback};end;`;
+                    }
+                  }
+                } catch (err) {
+                  console.warn("activateAR failed:", err);
+                }
+              }}
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition"
+            >
               🚀 啟動 AR 模式
             </button>
           </model-viewer>
