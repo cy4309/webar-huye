@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ARAnchor, ARView } from "react-three-mind";
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,11 +25,21 @@ const Home: React.FC = () => {
 
   return (
     <>
-      {/* ✅ 手機且已掃到圖後，就移除 ARView，避免白屏 */}
       {isPhone && found ? (
         <div className="model-viewer-wrapper">
-          <model-viewer ref={mvRef} src="/models/meals_mk.glb" ios-src="/models/car_model.usdz" ar ar-modes="scene-viewer webxr quick-look" camera-controls auto-rotate shadow-intensity="1" style={{ width: "100%", height: "100%" }}>
+          <model-viewer
+            ref={mvRef}
+            src="/models/meals_mk.glb"
+            ios-src="/models/car_model.usdz"
+            ar
+            ar-modes="scene-viewer webxr quick-look"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            style={{ width: "100%", height: "100%" }}
+          >
             <button
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition"
               slot="ar-button"
               onClick={async (e) => {
                 e.stopPropagation();
@@ -47,23 +57,36 @@ const Home: React.FC = () => {
                       window.location.href = "/models/car_model.usdz";
                     } else {
                       // 直接開 Scene Viewer intent（保險做法，可留著）
-                      const glb = encodeURIComponent(new URL("/models/meals_mk.glb", window.location.href).toString());
+                      const glb = encodeURIComponent(
+                        new URL(
+                          "/models/meals_mk.glb",
+                          window.location.href
+                        ).toString()
+                      );
                       const fallback = encodeURIComponent(window.location.href);
-                      window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${glb}&mode=ar_preferred` + `#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;` + `S.browser_fallback_url=${fallback};end;`;
+                      window.location.href =
+                        `intent://arvr.google.com/scene-viewer/1.0?file=${glb}&mode=ar_preferred` +
+                        `#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;` +
+                        `S.browser_fallback_url=${fallback};end;`;
                     }
                   }
                 } catch (err) {
                   console.warn("activateAR failed:", err);
                 }
               }}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition"
             >
               🚀 啟動 AR 模式
             </button>
           </model-viewer>
         </div>
       ) : (
-        <ARView imageTargets="/models/targets.mind" filterMinCF={1} filterBeta={10000} missTolerance={0} warmupTolerance={0}>
+        <ARView
+          imageTargets="/models/targets.mind"
+          filterMinCF={1}
+          filterBeta={10000}
+          missTolerance={0}
+          warmupTolerance={0}
+        >
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
           <ARAnchor target={0} onAnchorFound={handleFound}>
