@@ -30,13 +30,13 @@ const Home: React.FC = () => {
           <model-viewer
             ref={mvRef}
             src="/models/ani-test2.glb"
-            ios-src="/models/ani-test2.usdz"
+            ios-src="/models/MitaSideGirl__Selfi.usdz"
             ar
             ar-modes="scene-viewer webxr quick-look"
             camera-controls
             auto-rotate
             autoplay
-            animation-name="骨架Action"
+            // animation-name="骨架Action"
             animation-loop
             shadow-intensity="1"
             style={{ width: "100%", height: "100%" }}
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
                     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
                     if (isIOS) {
                       // 直接開 Quick Look 連結
-                      window.location.href = "/models/ani-test2.usdz";
+                      window.location.href = "/models/MitaSideGirl__Selfi.usdz";
                     } else {
                       // 直接開 Scene Viewer intent（保險做法，可留著）
                       const glb = encodeURIComponent(
