@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         <div className="model-viewer-wrapper">
           <model-viewer
             ref={mvRef}
-            src="/models/ani-test2.glb"
+            src="/models/shoye.glb"
             ios-src="/models/shoye.usdz"
             ar
             ar-modes="scene-viewer webxr quick-look"
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
                       // 直接開 Scene Viewer intent（保險做法，可留著）
                       const glb = encodeURIComponent(
                         new URL(
-                          "/models/ani-test2.glb",
+                          "/models/shoye.glb",
                           window.location.href
                         ).toString()
                       );
