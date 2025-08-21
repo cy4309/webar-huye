@@ -29,8 +29,8 @@ const Home: React.FC = () => {
         <div className="model-viewer-wrapper">
           <model-viewer
             ref={mvRef}
-            src="/models/tiger-scene-test3.glb"
-            ios-src="/models/model.usdz"
+            src="/models/ani-test.glb"
+            ios-src="/models/ani-test.usdz"
             ar
             ar-modes="scene-viewer webxr quick-look"
             camera-controls
@@ -54,12 +54,12 @@ const Home: React.FC = () => {
                     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
                     if (isIOS) {
                       // 直接開 Quick Look 連結
-                      window.location.href = "/models/model.usdz";
+                      window.location.href = "/models/ani-test.usdz";
                     } else {
                       // 直接開 Scene Viewer intent（保險做法，可留著）
                       const glb = encodeURIComponent(
                         new URL(
-                          "/models/tiger-scene-test3.glb",
+                          "/models/ani-test.glb",
                           window.location.href
                         ).toString()
                       );
