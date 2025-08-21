@@ -35,6 +35,8 @@ const Home: React.FC = () => {
             ar-modes="scene-viewer webxr quick-look"
             camera-controls
             auto-rotate
+            autoplay
+            animation-loop
             shadow-intensity="1"
             style={{ width: "100%", height: "100%" }}
           >

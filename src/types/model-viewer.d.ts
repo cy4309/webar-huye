@@ -1,6 +1,9 @@
 declare namespace JSX {
   interface IntrinsicElements {
-    "model-viewer": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+    "model-viewer": React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLElement>,
+      HTMLElement
+    > & {
       src?: string;
       "ios-src"?: string;
       alt?: string;
@@ -8,6 +11,9 @@ declare namespace JSX {
       "ar-modes"?: string;
       "camera-controls"?: boolean;
       "auto-rotate"?: boolean;
+      autoplay?: boolean;
+      "animation-name"?: string;
+      "animation-loop"?: boolean;
       "shadow-intensity"?: string | number;
       style?: React.CSSProperties;
     };
