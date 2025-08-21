@@ -36,6 +36,7 @@ const Home: React.FC = () => {
             camera-controls
             auto-rotate
             autoplay
+            animation-name="骨架Action"
             animation-loop
             shadow-intensity="1"
             style={{ width: "100%", height: "100%" }}
