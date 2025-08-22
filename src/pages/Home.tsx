@@ -28,6 +28,37 @@ const Home: React.FC = () => {
     setFound(false);
   };
 
+  const handleARButtonClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    mvRef: React.RefObject<any>
+  ) => {
+    e.stopPropagation();
+    const mv = mvRef.current;
+    if (!mv) return;
+
+    try {
+      if (mv.canActivateAR) {
+        await mv.activateAR(); // 原生 AR viewer
+      } else {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS) {
+          window.location.href = "/models/tiger-0822.usdz";
+        } else {
+          const glb = encodeURIComponent(
+            new URL("/models/tiger-0822.glb", window.location.href).toString()
+          );
+          const fallback = encodeURIComponent(window.location.href);
+          window.location.href =
+            `intent://arvr.google.com/scene-viewer/1.0?file=${glb}&mode=ar_preferred` +
+            `#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;` +
+            `S.browser_fallback_url=${fallback};end;`;
+        }
+      }
+    } catch (err) {
+      console.warn("activateAR failed:", err);
+    }
+  };
+
   return (
     <>
       <div className="w-full h-[100dvh] relative">
@@ -84,43 +115,10 @@ const Home: React.FC = () => {
               }}
             />
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40">
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40">
               <button
-                className="bg-cyan-400 text-black font-semibold py-2 px-5 rounded-lg shadow-lg hover:bg-cyan-300 transition"
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  const mv = mvRef.current;
-                  if (!mv) return;
-
-                  try {
-                    if (mv.canActivateAR) {
-                      await mv.activateAR(); // 原生 AR viewer
-                    } else {
-                      const isIOS = /iPad|iPhone|iPod/.test(
-                        navigator.userAgent
-                      );
-                      if (isIOS) {
-                        window.location.href = "/models/tiger-0822.usdz";
-                      } else {
-                        const glb = encodeURIComponent(
-                          new URL(
-                            "/models/tiger-0822.glb",
-                            window.location.href
-                          ).toString()
-                        );
-                        const fallback = encodeURIComponent(
-                          window.location.href
-                        );
-                        window.location.href =
-                          `intent://arvr.google.com/scene-viewer/1.0?file=${glb}&mode=ar_preferred` +
-                          `#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;` +
-                          `S.browser_fallback_url=${fallback};end;`;
-                      }
-                    }
-                  } catch (err) {
-                    console.warn("activateAR failed:", err);
-                  }
-                }}
+                className="bg-white/80 backdrop-blur-sm text-blue-600 border-gray-400 border py-3 px-3 rounded-2xl shadow-xl"
+                onClick={(e) => handleARButtonClick(e, mvRef)}
               >
                 🚀 啟動 AR 模式
               </button>
